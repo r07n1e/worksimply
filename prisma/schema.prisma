@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Leave_Type {
+  Annual_Leave
+  Sick_Leave
+  Sepcial_Leave
+  Replacement_Leave
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  email    String @unique
+  password String
+  role     Role   @default(USER)
+
+  Profile    Profile?
+  Attendance Attendance[]
+  Timeoff    Timeoff[]
+
+  @@map("users")
+}
+
+model Profile {
+  id     Int    @id @default(autoincrement())
+  user   User   @relation(fields: [userId], references: [id])
+  userId Int    @unique
+  bio    String
+
+  @@map("profiles")
+}
+
+model Attendance {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  date       DateTime @db.Date
+  timeIn     DateTime @default(now())
+  timeOut    DateTime @updatedAt
+  time_spent Float?   @default(0.00)
+
+  @@map("attendances")
+}
+
+model Timeoff {
+  id            Int        @id @default(autoincrement())
+  user          User       @relation(fields: [userId], references: [id])
+  userId        Int
+  type          Leave_Type
+  timeoff_start DateTime
+  timeoff_end   DateTime
+  attachment    String?
+  approved      Boolean    @default(false)
+
+  @@map("timeoffs")
+}
