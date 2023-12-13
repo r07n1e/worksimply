@@ -11,7 +11,7 @@ import {
 import { Role, User } from '@prisma/client';
 import { CurrentUser, Roles } from 'src/auth/decorator';
 import { JwtGuard, RolesGuard } from 'src/auth/guard';
-import { UserInfoDto } from './dto';
+import { UserProfileDto } from './dto';
 import { UserService } from './user.service';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -40,10 +40,10 @@ export class UserController {
   @Patch(':id')
   updateUser(
     @Param('id') id: number,
-    @Body() userInfo: UserInfoDto,
+    @Body() userProfile: UserProfileDto,
     @CurrentUser() user: User,
   ) {
-    return this.UserService.updateUser(id, userInfo, user);
+    return this.UserService.updateUser(id, userProfile, user);
   }
 
   @Delete(':id')
