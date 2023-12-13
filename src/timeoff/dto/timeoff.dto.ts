@@ -1,4 +1,4 @@
-import { Leave_Type } from '@prisma/client';
+import { Leave_Type, User } from '@prisma/client';
 import { IsEnum } from 'class-validator';
 
 export class TimeoffDto {
@@ -8,4 +8,9 @@ export class TimeoffDto {
   timeoff_start: Date;
 
   timeoff_end: Date;
+}
+
+export class SearchTimeoffDto {
+  user: User;
+  date: Date;
 }
