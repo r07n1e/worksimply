@@ -46,13 +46,13 @@ model Profile {
 }
 
 model Attendance {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [id])
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [id])
   userId     Int
-  date       DateTime @db.Date
-  timeIn     DateTime @default(now())
-  timeOut    DateTime @updatedAt
-  time_spent Float?   @default(0.00)
+  date       DateTime  @db.Date
+  timeIn     DateTime  @default(now())
+  timeOut    DateTime?
+  time_spent Float?    @default(0.00)
 
   @@map("attendances")
 }
