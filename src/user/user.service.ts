@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserInfoDto } from './dto';
+import { UserProfileDto } from './dto';
 import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  async updateUser(id: number, userInfo: UserInfoDto, user: User) {
+  async updateUser(id: number, userProfile: UserProfileDto, user: User) {
     if (id !== user.id) return null;
     try {
     } catch (error) {}
