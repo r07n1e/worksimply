@@ -12,6 +12,7 @@ import { JwtGuard, RolesGuard } from 'src/auth/guard';
 import { AttendanceService } from './attendance.service';
 import { CurrentUser, Roles } from 'src/auth/decorator';
 import { User } from '@prisma/client';
+import { AttendanceDto, SearchAttendanceDto } from './dto';
 
 @ApiTags('Attendance')
 @UseGuards(JwtGuard, RolesGuard)
@@ -33,12 +34,14 @@ export class AttendanceController {
   getAttendanceByUser(
     @Param('username') username: string,
     @CurrentUser() user: User,
-    @Body() dto,
+    @Body() dto: AttendanceDto,
   ) {
     return this.AttendanceService.getAttendanceByUser(username, user, dto);
   }
 
   @Get()
   @Roles(['ADMIN'])
-  getAllAttendances() {}
+  searchAttendance(@Body() dto: SearchAttendanceDto) {
+    return this.AttendanceService.searchAttendance(dto);
+  }
 }
