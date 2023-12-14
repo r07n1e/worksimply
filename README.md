@@ -45,6 +45,6 @@ $ npm run test:cov
 ```
 ## Note
 
-The project is currently in progress, it's only the early stage. This project is meant to be a learning project, not much of a grand plan or anything impressive. Please don't be critical about it. 
+The project is a work in progress, it's only the early stage. This project is meant to be a learning project, not much of a grand plan or anything impressive. Please don't be critical about it. 
 
 Thank you.
