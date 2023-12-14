@@ -67,7 +67,7 @@ export class TimeoffService {
     }
   }
 
-  async getTimeoffByUser(username, user) {
+  async getTimeoffByUser(username, user, dto) {
     try {
       if (!(username == user.username))
         return "You dont have permission to view this user's timeoff records.";
@@ -76,6 +76,7 @@ export class TimeoffService {
           userId: user.id,
         },
       });
+      return timeoffs;
     } catch (error) {
       throw error;
     }
