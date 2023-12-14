@@ -40,8 +40,9 @@ export class TimeoffController {
   getTimeoffByUser(
     @Param('username') username: string,
     @CurrentUser() user: User,
+    @Body() dto,
   ) {
-    return this.TimeoffService.getTimeoffByUser(username, user);
+    return this.TimeoffService.getTimeoffByUser(username, user, dto);
   }
 
   @Patch(':id')
