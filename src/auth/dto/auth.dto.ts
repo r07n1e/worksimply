@@ -3,6 +3,12 @@ import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 import { Role } from '@prisma/client';
 
 export class AuthDto {
+  email: string;
+  username: string;
+  password: string;
+}
+
+export class CreateUserDto {
   @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
@@ -18,6 +24,6 @@ export class AuthDto {
   @IsNotEmpty()
   @MinLength(8)
   password: string;
-
+  refreshToken: string;
   role: Role;
 }

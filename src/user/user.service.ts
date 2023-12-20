@@ -10,6 +10,14 @@ export class UserService {
   async updateUser(id: number, userProfile: UserProfileDto, user: User) {
     if (id !== user.id) return null;
     try {
+      const profile = await this.prisma.profile.update({
+        where: {
+          userId: user.id,
+        },
+        data: {
+          bio: userProfile.bio,
+        },
+      });
     } catch (error) {}
   }
 
