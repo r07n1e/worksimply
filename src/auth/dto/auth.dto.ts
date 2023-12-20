@@ -24,6 +24,5 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(8)
   password: string;
-  refreshToken: string;
   role: Role;
 }
