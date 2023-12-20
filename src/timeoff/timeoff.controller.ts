@@ -13,7 +13,7 @@ import { JwtGuard, RolesGuard } from 'src/auth/guard';
 import { Roles, CurrentUser } from 'src/auth/decorator';
 import { User } from '@prisma/client';
 import { TimeoffService } from './timeoff.service';
-import { SearchTimeoffDto } from './dto';
+import { SearchTimeoffDto, TimeoffApprovalDto, TimeoffDto } from './dto';
 
 @ApiTags('Time-Off')
 @Controller('timeoff')
@@ -22,12 +22,16 @@ export class TimeoffController {
   constructor(private TimeoffService: TimeoffService) {}
 
   @Post()
-  requestTimeoff(@Body() dto, @CurrentUser() user: User) {
+  requestTimeoff(@Body() dto: TimeoffDto, @CurrentUser() user: User) {
     return this.TimeoffService.requestTimeoff(dto, user);
   }
 
   @Patch(':id')
-  editTimeoff(@Param('id') id: number, @Body() dto, @CurrentUser() user: User) {
+  editTimeoff(
+    @Param('id') id: number,
+    @Body() dto: TimeoffDto,
+    @CurrentUser() user: User,
+  ) {
     return this.TimeoffService.editTimeoff(id, dto, user);
   }
 
@@ -40,15 +44,15 @@ export class TimeoffController {
   getTimeoffByUser(
     @Param('username') username: string,
     @CurrentUser() user: User,
-    @Body() dto,
+    @Body() dto: TimeoffDto,
   ) {
-    return this.TimeoffService.getTimeoffByUser(username, user, dto);
+    return this.TimeoffService.getTimeoffByUser(username, user);
   }
 
   @Patch(':id')
   @Roles(['ADMIN'])
-  approveTimeoff(@Param('id') id: number) {
-    return this.TimeoffService.approveTimeoff(id);
+  approveTimeoff(@Param('id') id: number, @Body() dto: TimeoffApprovalDto) {
+    return this.TimeoffService.approveTimeoff(id, dto);
   }
 
   @Get()

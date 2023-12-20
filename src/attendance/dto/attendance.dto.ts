@@ -1,6 +1,7 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { Transform } from 'class-transformer';
+import { IsOptional } from 'class-validator';
 
 export class AttendanceDto {
   @ApiPropertyOptional()
@@ -9,9 +10,18 @@ export class AttendanceDto {
 }
 
 export class SearchAttendanceDto {
-  @ApiProperty()
+  @ApiPropertyOptional()
   user: User;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
+  @IsOptional()
   date: Date;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  start_date: Date;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  end_date: Date;
 }

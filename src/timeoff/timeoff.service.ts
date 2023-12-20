@@ -1,19 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { SearchTimeoffDto } from './dto';
+import { SearchTimeoffDto, TimeoffDto } from './dto';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class TimeoffService {
   constructor(private prisma: PrismaService) {}
 
-  async requestTimeoff(dto, user) {
+  async requestTimeoff(dto: TimeoffDto, user: User) {
     try {
       const requestTimeoff = await this.prisma.timeoff.create({
         data: {
+          userId: user.id,
           type: dto.type,
           timeoff_start: dto.timeoff_start,
           timeoff_end: dto.timeoff_end,
-          userId: user.id,
+          //description: dto.description,
         },
       });
 
@@ -23,7 +25,7 @@ export class TimeoffService {
     }
   }
 
-  async editTimeoff(id, dto, user) {
+  async editTimeoff(id, dto: TimeoffDto, user: User) {
     try {
       const timeoff = await this.prisma.timeoff.findUnique({
         where: {
@@ -36,7 +38,12 @@ export class TimeoffService {
         where: {
           id: id,
         },
-        data: {},
+        data: {
+          ...(dto.type ? { type: dto.type } : {}),
+          ...(dto.timeoff_start ? { timeoff_start: dto.timeoff_start } : {}),
+          ...(dto.timeoff_end ? { timeoff_end: dto.timeoff_end } : {}),
+          ...(dto.description ? {} : {}),
+        },
       });
 
       return editTimeoff;
@@ -45,7 +52,7 @@ export class TimeoffService {
     }
   }
 
-  async deleteTimeoff(id, user) {
+  async deleteTimeoff(id: number, user: User) {
     try {
       const timeoff = await this.prisma.timeoff.findUnique({
         where: {
@@ -67,7 +74,7 @@ export class TimeoffService {
     }
   }
 
-  async getTimeoffByUser(username, user, dto) {
+  async getTimeoffByUser(username: string, user: User) {
     try {
       if (!(username == user.username))
         return "You dont have permission to view this user's timeoff records.";
@@ -97,14 +104,18 @@ export class TimeoffService {
     }
   }
 
-  async approveTimeoff(id) {
+  async approveTimeoff(id, dto) {
     try {
-      const approveTimeoff = this.prisma.timeoff.update({
+      const approvedTimeoff = this.prisma.timeoff.update({
         where: {
           id: id,
         },
-        data: {},
+        data: {
+          approved: dto.approval,
+        },
       });
+
+      return approvedTimeoff;
     } catch (error) {
       throw error;
     }

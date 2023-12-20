@@ -8,8 +8,10 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.setGlobalPrefix('api');
   const config = new DocumentBuilder()
-    .setTitle('Meganise APIs')
-    .setDescription('The megz apis.')
+    .setTitle('Work2Simply')
+    .setDescription(
+      'worksimply, ready to use APIs for HR managment. Includes all functions an HR might need.',
+    )
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
