@@ -15,7 +15,8 @@ export class TimeoffService {
           type: dto.type,
           timeoff_start: dto.timeoff_start,
           timeoff_end: dto.timeoff_end,
-          //description: dto.description,
+          duration: dto.duration,
+          description: dto.description,
         },
       });
 
@@ -42,7 +43,8 @@ export class TimeoffService {
           ...(dto.type ? { type: dto.type } : {}),
           ...(dto.timeoff_start ? { timeoff_start: dto.timeoff_start } : {}),
           ...(dto.timeoff_end ? { timeoff_end: dto.timeoff_end } : {}),
-          ...(dto.description ? {} : {}),
+          ...(dto.duration ? { duration: dto.duration } : {}),
+          ...(dto.description ? { description: dto.description } : {}),
         },
       });
 
