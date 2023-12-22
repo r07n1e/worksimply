@@ -11,11 +11,14 @@ datasource db {
 }
 
 enum Role {
-  USER
-  ADMIN
+  User
+  Super_User
+  Manager
+  Project_Manager
+  Team_Lead
 }
 
-enum Prefix {
+enum Profile_Prefix {
   Mr
   Mrs
   Miss
@@ -28,29 +31,56 @@ enum Leave_Type {
   Replacement_Leave
 }
 
+// model Session {
+//   id           Int      @id @default(autoincrement())
+//   user         User     @relation("UserSession", fields: [userId], references: [id])
+//   ip_address   String
+//   access_token String
+//   expiration   Int
+//   signIn_date  DateTime
+//   signOut_date DateTime
+//   userId       Int
+// }
+
 model User {
   id       Int     @id @default(autoincrement())
   username String? @unique
   email    String? @unique
   password String
-  role     Role    @default(USER)
+  role     Role[]  @default([User])
 
   Profile    Profile?
   Attendance Attendance[]
   Timeoff    Timeoff[]
+  TeamOwned  Team[]       @relation("TeamOwner")
+  TeamJoined Team[]       @relation("TeamMember")
+  // TaskCreatedBy    Task[]       @relation("TaskCreatedBy")
+  // TaskUpdatedBy    Task[]       @relation("TaskUpdatedBy")
+  // TaskAssignedTo   Task[]       @relation("TaskAssignedTo")
+  // ProjectCreatedBy Project[]    @relation("ProjectCreatedBy")
+  // ProjectUpdatedBy Project[]    @relation("ProjectUpdatedBy")
+  //Session          Session[]    @relation("UserSession")
+
+  delflg Boolean @default(false)
+
+  joinAt DateTime @default(now())
 
   @@map("users")
 }
 
 model Profile {
-  id         Int     @id @default(autoincrement())
-  user       User    @relation(fields: [userId], references: [id])
-  userId     Int     @unique
-  prefix     Prefix?
-  name       String?
-  department String?
-  position   String?
-  bio        String?
+  id                Int             @id @default(autoincrement())
+  user              User            @relation(fields: [userId], references: [id])
+  userId            Int             @unique
+  prefix            Profile_Prefix?
+  name              String?
+  department        String?
+  position          String?
+  bio               String?
+  phone_number      Int?
+  emergency_contact Int?
+
+  delflg Boolean @default(false)
 
   @@map("profiles")
 }
@@ -63,6 +93,8 @@ model Attendance {
   timeIn     DateTime  @default(now())
   timeOut    DateTime?
   time_spent Float?    @default(0.00)
+
+  delflg Boolean @default(false)
 
   @@map("attendances")
 }
@@ -80,5 +112,59 @@ model Timeoff {
   approved      Boolean    @default(false)
   remark        String?
 
+  delflg Boolean @default(false)
+
   @@map("timeoffs")
 }
+
+model Team {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  teamOwner   User    @relation("TeamOwner", fields: [teamOwnerId], references: [id])
+  teamOwnerId Int
+  members     User[]  @relation("TeamMember")
+
+  delflg Boolean @default(false)
+
+  createdAt DateTime
+  updatedAt DateTime @updatedAt
+
+  @@map("teams")
+}
+
+// model Project {
+//   id          Int      @id @default(autoincrement())
+//   name        String
+//   description String
+//   attachments String[]
+
+//   delflg Boolean @default(false)
+
+//   createdAt        DateTime
+//   createdBy        Int
+//   projectCreatedBy User     @relation("ProjectCreatedBy", fields: [createdBy], references: [id])
+//   updatedAt        DateTime @updatedAt
+//   updatedBy        Int
+//   projectupdatedBy User     @relation("ProjectUpdatedBy", fields: [updatedBy], references: [id])
+
+//   @@map("projects")
+// }
+
+// model Task {
+//   id          Int    @id @default(autoincrement())
+//   name        String
+//   description String
+//   asignedTo   User[] @relation("TaskAssignedTo")
+
+//   delflg Boolean @default(false)
+
+//   createdAt     DateTime
+//   createdBy     Int
+//   taskCreatedBy User     @relation("TaskCreatedBy", fields: [createdBy], references: [id])
+//   updatedAt     DateTime @updatedAt
+//   updatedBy     Int
+//   taskUpdateBY  User     @relation("TaskUpdatedBy", fields: [updatedBy], references: [id])
+
+//   @@map("tasks")
+// }
