@@ -9,6 +9,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guard';
 import { AttendanceModule } from './attendance/attendance.module';
 import { TimeoffModule } from './timeoff/timeoff.module';
+import { TeamModule } from './team/team.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { TimeoffModule } from './timeoff/timeoff.module';
     PrismaModule,
     AttendanceModule,
     TimeoffModule,
+    TeamModule,
   ],
   controllers: [AppController],
   providers: [
