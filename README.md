@@ -5,12 +5,12 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-  <p align="center">A ready to use APIs for HR managment. Built with <a href="https://nestjs.com/" target="_blank">Nestjs.</a></p>
+  <p align="center">Backend for HR managment. Built with <a href="https://nestjs.com/" target="_blank">Nestjs.</a></p>
     <p align="center">
 
 ## Description
 
-WorkSimply is a ready to use, open-source APIs for HR managment, include all basic feature an HR might needs.
+WorkSimply is a ready to use, open-source backend for HR managment, include all basic feature an HR might needs.
 
 ## Installation
 
