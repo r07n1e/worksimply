@@ -59,7 +59,7 @@ model User {
   // TaskAssignedTo   Task[]       @relation("TaskAssignedTo")
   // ProjectCreatedBy Project[]    @relation("ProjectCreatedBy")
   // ProjectUpdatedBy Project[]    @relation("ProjectUpdatedBy")
-  //Session          Session[]    @relation("UserSession")
+  // Session          Session[]    @relation("UserSession")
 
   delflg Boolean @default(false)
 
@@ -125,9 +125,11 @@ model Team {
   teamOwnerId Int
   members     User[]  @relation("TeamMember")
 
+  TeamInviteCode TeamInviteCode[]
+
   delflg Boolean @default(false)
 
-  createdAt DateTime
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("teams")
@@ -168,3 +170,13 @@ model Team {
 
 //   @@map("tasks")
 // }
+
+model TeamInviteCode {
+  id       Int      @id @default(autoincrement())
+  inviteId String   @unique
+  teamId   Int
+  team     Team     @relation(fields: [teamId], references: [id])
+  expired  DateTime
+
+  @@map("teaminvitecodes")
+}
